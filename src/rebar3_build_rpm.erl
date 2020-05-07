@@ -147,11 +147,17 @@ do(State) ->
 format_error(Reason) ->
   io_lib:format("~p", [Reason]).
 
-find_name_and_vsn_from_relx (State) ->
-  case rebar_state:get(State, relx, []) of
-    {release,{Name, Vsn},_} -> {ok, {atom_to_list(Name), Vsn}};
-    false -> {error, {?MODULE, no_relx_config}}
-  end.
+find_name_and_vsn_from_relx(State) ->
+  Relx = rebar_state:get(State, relx, []),
+  parse_name_and_vsn(Relx).
+  
+parse_name_and_vsn([]) ->
+  {error, {?MODULE, no_relx_config}};
+parse_name_and_vsn([Tuple]) ->
+  parse_name_and_vsn(Tuple);
+parse_name_and_vsn(Tuple) ->
+  {Name, Vsn} = element(2, Tuple),
+  {ok, {atom_to_list(Name), Vsn}}.
 
 find_tar_file (State, {Name, Vsn}) ->
   Base = rebar_dir:base_dir(State),
