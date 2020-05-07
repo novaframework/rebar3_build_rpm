@@ -157,7 +157,7 @@ parse_name_and_vsn([Tuple]) ->
   parse_name_and_vsn(Tuple);
 parse_name_and_vsn(Tuple) ->
   {Name, Vsn} = element(2, Tuple),
-  {ok, {atom_to_list(Name), Vsn}}.
+  {ok, {Name, Vsn}}.
 
 find_tar_file (State, {Name, Vsn}) ->
   Base = rebar_dir:base_dir(State),
