@@ -148,8 +148,7 @@ format_error(Reason) ->
   io_lib:format("~p", [Reason]).
 
 find_name_and_vsn_from_relx (State) ->
-  Relx = rebar_state:get(State, relx, []),
-  case lists:keyfind (release, 1, Relx) of
+  case rebar_state:get(State, relx, []) of
     {release,{Name, Vsn},_} -> {ok, {atom_to_list(Name), Vsn}};
     false -> {error, {?MODULE, no_relx_config}}
   end.
